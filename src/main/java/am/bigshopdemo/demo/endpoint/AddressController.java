@@ -11,11 +11,6 @@ public class AddressController {
 
     private final AddressService addressService;
 
-    @GetMapping("/address/{userId}")
-    public Address addresses(@PathVariable("userId") int userId) {
-        return addressService.findByUserId(userId);
-    }
-
     @PostMapping("/address/add")
     public void addAddress(@RequestBody Address address) {
         addressService.save(address);

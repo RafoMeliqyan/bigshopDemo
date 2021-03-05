@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -65,21 +64,6 @@ public class UserController {
                 userService.save(user);
             }
         }
-    }
-
-    @GetMapping("/allUsers")
-    public List<User> users() {
-        return userService.findAll();
-    }
-
-    @GetMapping("/user/{id}")
-    public Optional<User> userById(@PathVariable("id") int id) {
-        return userService.findById(id);
-    }
-
-    @GetMapping("/delete/user/{id}")
-    public void deleteById(@PathVariable("id") int id) {
-        userService.deleteById(id);
     }
 
 }

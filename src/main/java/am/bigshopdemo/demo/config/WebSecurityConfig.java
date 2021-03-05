@@ -1,6 +1,5 @@
 package am.bigshopdemo.demo.config;
 
-
 import am.bigshopdemo.demo.security.JwtAuthenticationEntryPoint;
 import am.bigshopdemo.demo.security.JwtAuthenticationTokenFilter;
 import am.bigshopdemo.demo.security.UserDetailServiceImpl;
@@ -37,6 +36,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/address/add").hasAnyAuthority("USER")
+                .antMatchers("/address/{userId}").hasAnyAuthority("ADMIN")
+                .antMatchers("/delete/user/{id}").hasAnyAuthority("ADMIN")
+                .antMatchers("/add/cart").hasAnyAuthority("ADMIN")
+                .antMatchers("/add/order").hasAnyAuthority("ADMIN")
+                .antMatchers("/add/product").hasAnyAuthority("ADMIN")
+                .antMatchers("/product/update/{id}").hasAnyAuthority("ADMIN")
+                .antMatchers("/product/delete/{id}").hasAnyAuthority("ADMIN")
+                .antMatchers("/cart/{id}").hasAnyAuthority("ADMIN")
+                .antMatchers("/addToCart/{userId}/{productId}").hasAnyAuthority("USER")
+                .antMatchers("/ordersByUserId/{userId}").hasAnyAuthority("ADMIN")
+                .antMatchers("/buy/{userId}/{productId}").hasAnyAuthority("USER")
+                .antMatchers("/register").hasAnyAuthority("USER")
+                .antMatchers("/activate/{email},{token}").hasAnyAuthority("USER")
+                .antMatchers("/allUsers").hasAnyAuthority("ADMIN")
+                .antMatchers("/user/{id}").hasAnyAuthority("ADMIN")
                 .anyRequest().permitAll();
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 

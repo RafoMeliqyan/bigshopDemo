@@ -18,21 +18,12 @@ public class OrdersController {
     private final ProductService productService;
     private final ProductRepository productRepository;
 
-    @PostMapping("/addOrder")
-    public void addOrder(@RequestBody Orders orders) {
-        ordersService.save(orders);
-    }
-
-    @GetMapping("/ordersByUserId/{userId}")
-    public Orders orders(@PathVariable("userId") int userId) {
-        return ordersService.findByUserId(userId);
-    }
-
     @GetMapping("/ordersById/{id}")
     public Orders ordersById(@PathVariable("id") int id) {
         return ordersService.findOrdersById(id);
     }
 
+    //CurrentUser
     @PutMapping("/buy/{userId}/{productId}")
     public void buy(@PathVariable("userId") int userId,
                     @PathVariable("productId") int productId) {
