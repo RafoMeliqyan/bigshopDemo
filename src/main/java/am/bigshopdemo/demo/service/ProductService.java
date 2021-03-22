@@ -52,7 +52,46 @@ public class ProductService {
         return productRepository.findAllByCategory_Id(id);
     }
 
-    public List<Product> getOne(int productId) {
+    public List<Product> getOneList(int productId) {
         return productRepository.findAllById(productId);
     }
+
+    public Product getOne(int productId) {
+        return productRepository.getOne(productId);
+    }
+
+    public List<Product> filterByBrandAndCategory(int id,String brand) {
+        return productRepository.findAllByCategoryIdAndBrand(id,brand);
+    }
+
+    public List<Product> filterProductsByPrice(int min, int max) {
+        return productRepository.filterProductsByPrice(min,max);
+    }
+
+    public List<Product> filterByPriceAndCategory(int min, int max, int id) {
+        return productRepository.filterProductsByPriceAndCategoryId(min,max,id);
+    }
+
+    public List<Product> filterProductsByPriceAndBrand(int min, int max, String brand) {
+        return productRepository.filterProductsByPriceAndBrand(min,max,brand);
+    }
+
+    public List<Product> filterProductsByPriceAndBrandAndCategory(int min, int max, String brand, int categoryId) {
+        return productRepository.filterProductsByPriceAndBrandAndCategory(min,max,brand,categoryId);
+    }
+
+    public void updateProduct(Product product, int id) throws Exception {
+        Product productToUpdate = productRepository.findById(id)
+                .orElseThrow(() -> new Exception("Product does not exist"));
+        productToUpdate.setName(product.getName());
+        productToUpdate.setPrice(product.getPrice());
+        productToUpdate.setDescription(product.getDescription());
+        productToUpdate.setCategory(product.getCategory());
+        productToUpdate.setAction(product.getAction());
+        productToUpdate.setCount(product.getCount());
+        productToUpdate.setStatus(product.getStatus());
+        productToUpdate.setFeaturing(product.getFeaturing());
+        productRepository.save(productToUpdate);
+    }
+
 }

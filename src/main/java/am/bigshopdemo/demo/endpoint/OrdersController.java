@@ -1,22 +1,20 @@
 package am.bigshopdemo.demo.endpoint;
 
 import am.bigshopdemo.demo.model.Orders;
-import am.bigshopdemo.demo.model.Product;
-import am.bigshopdemo.demo.repository.ProductRepository;
+import am.bigshopdemo.demo.security.CurrentUser;
 import am.bigshopdemo.demo.service.OrdersService;
-import am.bigshopdemo.demo.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 public class OrdersController {
 
     private final OrdersService ordersService;
-    private final ProductService productService;
-    private final ProductRepository productRepository;
 
     @GetMapping("/ordersById/{id}")
     public Orders ordersById(@PathVariable("id") int id) {
@@ -24,16 +22,10 @@ public class OrdersController {
     }
 
     //CurrentUser
-    @PutMapping("/buy/{userId}/{productId}")
-    public void buy(@PathVariable("userId") int userId,
+    @PutMapping("/buy/{productId}")
+    public void buy(@AuthenticationPrincipal CurrentUser currentUser,
                     @PathVariable("productId") int productId) {
-        Orders byUserId = ordersService.findByUserId(userId);
-        List<Product> one = productService.getOne(productId);
-        Product one1 = productRepository.getOne(productId);
-        byUserId.setProducts(one);
-        ordersService.save(byUserId);
-        one1.setCount(one1.getCount()-1);
-        productService.save(one1);
+        ordersService.buy(currentUser.getUser().getId(),productId);
     }
 
 }

@@ -41,24 +41,14 @@ public class AdminController {
         productService.save(product);
     }
 
-    @PutMapping("/product/update/{id}")
-    public void updateProduct(@RequestBody Product product, @PathVariable("id") int id) throws Exception {
-        Product product1 = productService.findById(id)
-                .orElseThrow(() -> new Exception("Product does not exist"));
-        product1.setName(product.getName());
-        product1.setPrice(product.getPrice());
-        product1.setDescription(product.getDescription());
-        product1.setCategory(product.getCategory());
-        product1.setAction(product.getAction());
-        product1.setCount(product.getCount());
-        product1.setStatus(product.getStatus());
-        product1.setFeaturing(product.getFeaturing());
-        productService.save(product1);
-    }
-
     @DeleteMapping("/product/delete/{id}")
     public void deleteProduct(@PathVariable("id") int id) {
         productService.deleteById(id);
+    }
+
+    @PostMapping("/product/update/{id}")
+    public void updateProduct(@PathVariable("id") int id, @RequestBody Product product) throws Exception {
+        productService.updateProduct(product,id);
     }
 
     @GetMapping("/cart/{id}")

@@ -1,36 +1,23 @@
 package am.bigshopdemo.demo.endpoint;
 
-import am.bigshopdemo.demo.model.Cart;
-import am.bigshopdemo.demo.model.Product;
-import am.bigshopdemo.demo.model.User;
+import am.bigshopdemo.demo.security.CurrentUser;
 import am.bigshopdemo.demo.service.CartService;
-import am.bigshopdemo.demo.service.ProductService;
-import am.bigshopdemo.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 public class CartController {
 
     private final CartService cartService;
-    private final ProductService productService;
-    private final UserService userService;
 
-    //todo
-    //CurrentUser
-    @PutMapping("/addToCart/{userId}/{productId}")
-    public void addToCart(@PathVariable("userId") int userId,
+    @PutMapping("/addToCart/{productId}")
+    public void addToCart(@AuthenticationPrincipal CurrentUser currentUser,
                           @PathVariable("productId") int productId) {
-        User one = userService.getOne(userId);
-        List<Product> one1 = productService.getOne(productId);
-        Cart cartByUserId = cartService.findCartByUserId(userId);
-        cartByUserId.setUser(one);
-        cartByUserId.setProducts(one1);
-        cartService.save(cartByUserId);
+        cartService.addToCart(currentUser.getUser().getId(),productId);
     }
 
 }
-
