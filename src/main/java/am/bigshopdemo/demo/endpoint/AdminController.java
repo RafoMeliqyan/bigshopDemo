@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,7 @@ public class AdminController {
     }
 
     @PostMapping("/add/product")
-    public void addProducts(@RequestBody Product product, @PathVariable("image") MultipartFile file) {
+    public void addProducts(@Valid @RequestBody Product product, @PathVariable("image") MultipartFile file) {
         productService.save(product);
     }
 

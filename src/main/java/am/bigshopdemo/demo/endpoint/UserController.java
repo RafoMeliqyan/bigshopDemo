@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -25,7 +27,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public void register(@RequestBody User user, Cart cart, Orders orders) {
+    public void register(@Valid @RequestBody User user, Cart cart, Orders orders) {
         userService.register(user,cart,orders);
     }
 
